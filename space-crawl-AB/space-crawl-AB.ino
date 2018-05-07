@@ -2,6 +2,8 @@
 
 SPACE CRAWL: The Gamy Menace
 2018 - Trodoss
+
+Version 0.2
 */
 
 #include "globals.h"

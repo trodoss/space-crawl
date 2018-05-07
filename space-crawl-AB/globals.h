@@ -15,7 +15,6 @@
 Arduboy2Base arduboy;
 Sprites sprites;
 
-unsigned long score = 0;
 short view_x;
 short view_y;
 

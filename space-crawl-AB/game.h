@@ -47,7 +47,13 @@ void startGame()
 {
   level_element_add(TYPE_PLAYER, 0,0, STATE_PLAYER_RIGHT, FACING_RIGHT);
   level_element_add(TYPE_LASER, 0,0, STATE_HIDDEN, FACING_RIGHT);
-  add_enemy();
+
+  level_element_add(TYPE_ENEMY, 0,0, STATE_HIDDEN, FACING_RIGHT);
+  level_element_add(TYPE_ENEMY, 0,0, STATE_HIDDEN, FACING_RIGHT);
+  level_element_add(TYPE_ENEMY, 0,0, STATE_HIDDEN, FACING_RIGHT);
+  add_enemy(2);
+  add_enemy(3);
+  add_enemy(4);
   stateGamePlaying();
  
 };
@@ -55,7 +61,14 @@ void startGame()
 void stateGameOver() {
    gameState = STATE_GAME_OVER;
    sprites.drawSelfMasked(20, 8, game_over_img, 0);
-  if (arduboy.justPressed(A_BUTTON | B_BUTTON)) startGame();
+  if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
+    view_x = 0;
+    view_y = 0;
+    globalCounter = 0;
+
+    level_element_reset();
+    startGame();
+  }
 }
 
 #endif

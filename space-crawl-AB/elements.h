@@ -57,6 +57,12 @@ void level_element_add(char type, char x, char y, char state, char facing)
       element_count++;  
 }
 
+void level_element_reset() {
+  //clear the array of the previous contents
+  memset(levelElements, 0, sizeof(levelElements));
+  element_count = 0;
+}
+
 LevelElement level_element_get(char id) {
   return levelElements[id];
 }
@@ -191,17 +197,19 @@ LevelElement handle_laser(LevelElement laser) {
   return laser;
 }
 
-void add_enemy () {
+void add_enemy (char id) {
   bool is_valid = false;
+  LevelElement enemy = level_element_get(id);
   int x = 0; 
   int y = 0;
   char state = (random() % 4) + STATE_ENEMY_RIGHT;
   while (!is_valid) {
-    x = (random() % 128); 
-    y = (random() % 64);
-    if (check_move(x, y )) is_valid = true; 
+    enemy.x = (random() % 128); 
+    enemy.y = (random() % 64);
+    if (check_move(enemy.x, enemy.y )) is_valid = true; 
   }
-  level_element_add(TYPE_ENEMY, x,y, state, FACING_RIGHT);
+  enemy.state = state;
+  level_element_update(id, enemy);
 }
 
 LevelElement handle_enemy(LevelElement enemy) {
@@ -266,8 +274,14 @@ LevelElement handle_enemy(LevelElement enemy) {
         level_element_update(1, laser);
 
         enemy.state = STATE_HIDDEN;
-        //to do: add new enemy
+        add_enemy(enemy.id);
       }
+    }
+    
+    //check for player hit
+    LevelElement player = level_element_get(0);
+    if (level_test_element(player, enemy.x, enemy.y)) {
+      gameState = STATE_GAME_OVER;
     }
     
     if (enemy.state > STATE_HIDDEN) {
@@ -299,7 +313,7 @@ void level_element_handle()
         case TYPE_ENEMY:
           if (!check_move(levelElements[i].x, levelElements[i].y)) {
               levelElements[i].y -= 2;
-              //if (levelElements[i].y < 1) 
+              add_enemy(levelElements[i].id);
           }
           levelElements[i] = handle_enemy(levelElements[i]);
           break;
