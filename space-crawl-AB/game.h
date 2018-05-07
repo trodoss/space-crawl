@@ -67,7 +67,7 @@ void stateGameOver() {
     globalCounter = 0;
 
     level_element_reset();
-    startGame();
+    gameState = STATE_MENU_MAIN;
   }
 }
 
