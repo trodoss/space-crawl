@@ -7,6 +7,8 @@
 
 void stateGamePlaying() {
  gameState = STATE_GAME_PLAYING;
+
+ sprites.drawOverwrite(0, 0, background_img, 0);
  
  globalCounter++;
  if (globalCounter > 20) {
